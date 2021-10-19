@@ -35,6 +35,12 @@ func (c *BuyFavoritesCommander) CallbackList(callback *tgbotapi.CallbackQuery, c
 		return
 	}
 
+	paginationButtons, err := c.generatePaginationButtons(parsedData.Offset)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
 	outputMsgText := "Entity List:\n\n"
 	for _, entity := range listOfEntities {
 		outputMsgText += entity.String()
@@ -46,16 +52,10 @@ func (c *BuyFavoritesCommander) CallbackList(callback *tgbotapi.CallbackQuery, c
 		outputMsgText,
 	)
 
-	paginationButtons, err := c.generatePaginationButtons(parsedData.Offset)
-	if err != nil {
-		log.Println(err)
-		return
-	}
-
-	if len(*paginationButtons) != 0 {
+	if len(paginationButtons) != 0 {
 		msg.ReplyMarkup = tgbotapi.NewInlineKeyboardMarkup(
 			tgbotapi.NewInlineKeyboardRow(
-				*paginationButtons...,
+				paginationButtons...,
 			),
 		)
 	}

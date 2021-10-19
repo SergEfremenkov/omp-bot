@@ -9,7 +9,6 @@ import (
 func (c *BuyFavoritesCommander) List(inputMsg *tgbotapi.Message) {
 	const ErrorMessageStart = "Error in function BuyFavoritesCommander.List:"
 	var initialOffset uint64 = 0
-	var outputMsgText string = "Entity List:\n\n"
 
 	listOfEntities, err := c.favoritesService.List(initialOffset, c.maxNumOfEntitiesPerPage)
 	if err != nil {
@@ -19,6 +18,13 @@ func (c *BuyFavoritesCommander) List(inputMsg *tgbotapi.Message) {
 		return
 	}
 
+	paginationButtons, err := c.generatePaginationButtons(initialOffset)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	var outputMsgText string = "Entity List:\n\n"
 	for _, entity := range listOfEntities {
 		outputMsgText += entity.String()
 		outputMsgText += "\n"
@@ -29,16 +35,10 @@ func (c *BuyFavoritesCommander) List(inputMsg *tgbotapi.Message) {
 		outputMsgText,
 	)
 
-	paginationButtons, err := c.generatePaginationButtons(initialOffset)
-	if err != nil {
-		log.Println(err)
-		return
-	}
-
-	if len(*paginationButtons) != 0 {
+	if len(paginationButtons) != 0 {
 		msg.ReplyMarkup = tgbotapi.NewInlineKeyboardMarkup(
 			tgbotapi.NewInlineKeyboardRow(
-				*paginationButtons...,
+				paginationButtons...,
 			),
 		)
 	}

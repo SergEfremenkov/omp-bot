@@ -7,7 +7,7 @@ import (
 	"log"
 )
 
-func (c *BuyFavoritesCommander) generatePaginationButtons(currentOffset uint64) (*[]tgbotapi.InlineKeyboardButton, error) {
+func (c *BuyFavoritesCommander) generatePaginationButtons(currentOffset uint64) ([]tgbotapi.InlineKeyboardButton, error) {
 	paginationButtons := make([]tgbotapi.InlineKeyboardButton, 0, 2)
 
 	if currentOffset >= c.maxNumOfEntitiesPerPage {
@@ -31,7 +31,7 @@ func (c *BuyFavoritesCommander) generatePaginationButtons(currentOffset uint64) 
 		paginationButtons = append(paginationButtons, *button)
 	}
 
-	return &paginationButtons, nil
+	return paginationButtons, nil
 }
 
 func (c *BuyFavoritesCommander) createPaginationButton(buttonName string, offset uint64) (*tgbotapi.InlineKeyboardButton, error) {
@@ -45,7 +45,7 @@ func (c *BuyFavoritesCommander) createPaginationButton(buttonName string, offset
 			err,
 		)
 
-		return &tgbotapi.InlineKeyboardButton{}, err
+		return nil, err
 	}
 
 	CallbackPath := path.CallbackPath{
