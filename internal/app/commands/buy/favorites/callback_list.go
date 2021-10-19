@@ -14,7 +14,6 @@ type CallbackListData struct {
 
 func (c *BuyFavoritesCommander) CallbackList(callback *tgbotapi.CallbackQuery, callbackPath path.CallbackPath) {
 	const ErrorMessageStart = "Error in function BuyFavoritesCommander.CallbackList:"
-
 	parsedData := CallbackListData{}
 
 	err := json.Unmarshal([]byte(callbackPath.CallbackData), &parsedData)
@@ -36,7 +35,7 @@ func (c *BuyFavoritesCommander) CallbackList(callback *tgbotapi.CallbackQuery, c
 		return
 	}
 
-	outputMsgText := "Entity List:\n"
+	outputMsgText := "Entity List:\n\n"
 	for _, entity := range listOfEntities {
 		outputMsgText += entity.String()
 		outputMsgText += "\n"
@@ -63,6 +62,6 @@ func (c *BuyFavoritesCommander) CallbackList(callback *tgbotapi.CallbackQuery, c
 
 	_, err = c.bot.Send(msg)
 	if err != nil {
-		log.Printf("error sending reply message to chat - %v", err)
+		log.Printf("%s error sending reply message to chat - %v", ErrorMessageStart, err)
 	}
 }
