@@ -1,7 +1,51 @@
 package favorites
 
-import tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
+import (
+	"fmt"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
+	"log"
+)
 
 func (c *BuyFavoritesCommander) List(inputMsg *tgbotapi.Message) {
+	const ErrorMessageStart = "Error in function BuyFavoritesCommander.List:"
 
+	var initialOffset uint64 = 0
+	var outputMsgText string = "Entity List:\n"
+
+	listOfEntities, err := c.favoritesService.List(initialOffset, c.maxNumOfEntitiesPerPage)
+	if err != nil {
+		log.Printf("%s %v", ErrorMessageStart, err)
+		c.SendAMessage(inputMsg, fmt.Sprintf("Error: %v", err))
+
+		return
+	}
+
+	for _, entity := range listOfEntities {
+		outputMsgText += entity.String()
+		outputMsgText += "\n"
+	}
+
+	msg := tgbotapi.NewMessage(
+		inputMsg.Chat.ID,
+		outputMsgText,
+	)
+
+	paginationButtons, err := c.generatePaginationButtons(initialOffset)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	if len(*paginationButtons) != 0 {
+		msg.ReplyMarkup = tgbotapi.NewInlineKeyboardMarkup(
+			tgbotapi.NewInlineKeyboardRow(
+				*paginationButtons...,
+			),
+		)
+	}
+
+	_, err = c.bot.Send(msg)
+	if err != nil {
+		log.Printf("error sending reply message to chat - %v", err)
+	}
 }

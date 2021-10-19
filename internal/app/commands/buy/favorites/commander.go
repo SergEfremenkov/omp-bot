@@ -21,16 +21,18 @@ type FavoritesCommander interface {
 }
 
 type BuyFavoritesCommander struct {
-	bot              *tgbotapi.BotAPI
-	favoritesService *favorites.DummyFavoritesService
+	bot                     *tgbotapi.BotAPI
+	favoritesService        favorites.FavoritesService
+	maxNumOfEntitiesPerPage uint64
 }
 
 func NewFavoritesCommander(bot *tgbotapi.BotAPI) FavoritesCommander {
 	favoritesService := favorites.NewDummyFavoritesService()
 
 	return &BuyFavoritesCommander{
-		bot:              bot,
-		favoritesService: favoritesService,
+		bot:                     bot,
+		favoritesService:        favoritesService,
+		maxNumOfEntitiesPerPage: 1,
 	}
 }
 

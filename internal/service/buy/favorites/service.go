@@ -32,15 +32,15 @@ func (s *DummyFavoritesService) List(cursor uint64, limit uint64) ([]buy.Favorit
 	sliceLength := uint64(len(buy.FavoritesTestModel))
 	lastIndex := cursor + limit
 
-	if (cursor + 1) > sliceLength {
+	if cursor >= sliceLength {
 		return nil, fmt.Errorf("requested boundaries are set incorrectly. Number of entities = %d", sliceLength)
 	}
 
-	if lastIndex > sliceLength {
+	if lastIndex >= sliceLength {
 		return buy.FavoritesTestModel[cursor:], nil
 	}
 
-	return buy.FavoritesTestModel[cursor : lastIndex : lastIndex-1], nil
+	return buy.FavoritesTestModel[cursor:lastIndex], nil
 }
 
 func (s *DummyFavoritesService) Create(favorites buy.Favorites) (uint64, error) {

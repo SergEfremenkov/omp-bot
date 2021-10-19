@@ -1,10 +1,10 @@
 package router
 
 import (
-	"github.com/ozonmp/omp-bot/internal/app/commands/buy"
 	"log"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
+	"github.com/ozonmp/omp-bot/internal/app/commands/buy"
 	"github.com/ozonmp/omp-bot/internal/app/commands/demo"
 	"github.com/ozonmp/omp-bot/internal/app/path"
 )
@@ -113,7 +113,7 @@ func (c *Router) handleCallback(callback *tgbotapi.CallbackQuery) {
 	case "access":
 		break
 	case "buy":
-		c.demoCommander.HandleCallback(callback, callbackPath)
+		c.buyCommander.HandleCallback(callback, callbackPath)
 	case "delivery":
 		break
 	case "recommendation":
