@@ -13,8 +13,8 @@ func (c *BuyFavoritesCommander) Get(inputMsg *tgbotapi.Message) {
 	arguments := inputMsg.CommandArguments()
 
 	ID, err := strconv.Atoi(arguments)
-	if err != nil || ID <= 0 {
-		msg := fmt.Sprintf("wrong argument. Entity ID must be greater than 0")
+	if err != nil || ID < 0 {
+		msg := fmt.Sprintf("wrong argument. Identifier must be unsigned integer.")
 
 		log.Printf("%s %s\nCommandArguments = %s", ErrorMessageStart, msg, arguments)
 		c.SendAMessage(inputMsg, fmt.Sprintf("Error: %s", msg))

@@ -8,9 +8,8 @@ import (
 
 func (c *BuyFavoritesCommander) List(inputMsg *tgbotapi.Message) {
 	const ErrorMessageStart = "Error in function BuyFavoritesCommander.List:"
-
 	var initialOffset uint64 = 0
-	var outputMsgText string = "Entity List:\n"
+	var outputMsgText string = "Entity List:\n\n"
 
 	listOfEntities, err := c.favoritesService.List(initialOffset, c.maxNumOfEntitiesPerPage)
 	if err != nil {
@@ -46,6 +45,6 @@ func (c *BuyFavoritesCommander) List(inputMsg *tgbotapi.Message) {
 
 	_, err = c.bot.Send(msg)
 	if err != nil {
-		log.Printf("error sending reply message to chat - %v", err)
+		log.Printf("%s error sending reply message to chat - %v", ErrorMessageStart, err)
 	}
 }

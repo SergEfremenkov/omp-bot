@@ -32,7 +32,7 @@ func NewFavoritesCommander(bot *tgbotapi.BotAPI) FavoritesCommander {
 	return &BuyFavoritesCommander{
 		bot:                     bot,
 		favoritesService:        favoritesService,
-		maxNumOfEntitiesPerPage: 1,
+		maxNumOfEntitiesPerPage: 4,
 	}
 }
 

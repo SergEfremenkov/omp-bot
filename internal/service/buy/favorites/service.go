@@ -1,6 +1,7 @@
 package favorites
 
 import (
+	"errors"
 	"fmt"
 	"github.com/ozonmp/omp-bot/internal/model/buy"
 )
@@ -44,10 +45,11 @@ func (s *DummyFavoritesService) List(cursor uint64, limit uint64) ([]buy.Favorit
 }
 
 func (s *DummyFavoritesService) Create(favorites buy.Favorites) (uint64, error) {
-	resultOfChecking := buy.IsIDExists(favorites.ID)
-	if resultOfChecking {
-		return 0, fmt.Errorf("entity with id %d already exists", favorites.ID)
+	if favorites.Name == "" {
+		return 0, errors.New("the field \"name\" is required")
 	}
+
+	favorites.ID = buy.SequenceFavoritesTestModel.NextVal()
 
 	buy.FavoritesTestModel = append(buy.FavoritesTestModel, favorites)
 
@@ -71,8 +73,7 @@ func (s *DummyFavoritesService) Remove(favoritesID uint64) (bool, error) {
 		return false, err
 	}
 
-	buy.FavoritesTestModel[index] = buy.FavoritesTestModel[len(buy.FavoritesTestModel)-1]
-	buy.FavoritesTestModel = buy.FavoritesTestModel[:len(buy.FavoritesTestModel)-1]
+	buy.FavoritesTestModel = append(buy.FavoritesTestModel[:index], buy.FavoritesTestModel[index+1:]...)
 
 	return true, nil
 }
