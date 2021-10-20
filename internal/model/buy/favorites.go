@@ -3,31 +3,31 @@ package buy
 import "fmt"
 
 var FavoritesTestModel = []Favorites{
-	{ID: 1, Name: "Name 1", Description: "Description 1"},
-	{ID: 2, Name: "Name 2", Description: "Description 2"},
-	{ID: 3, Name: "Name 3", Description: "Description 3"},
-	{ID: 4, Name: "Name 4", Description: "Description 4"},
-	{ID: 5, Name: "Name 5", Description: "Description 5"},
-	{ID: 6, Name: "Name 6", Description: "Description 6"},
-	{ID: 7, Name: "Name 7", Description: "Description 7"},
-	{ID: 8, Name: "Name 8", Description: "Description 8"},
-	{ID: 9, Name: "Name 9", Description: "Description 9"},
+	{ItemID: 1, Name: "Name 1", Description: "Description 1"},
+	{ItemID: 2, Name: "Name 2", Description: "Description 2"},
+	{ItemID: 3, Name: "Name 3", Description: "Description 3"},
+	{ItemID: 4, Name: "Name 4", Description: "Description 4"},
+	{ItemID: 5, Name: "Name 5", Description: "Description 5"},
+	{ItemID: 6, Name: "Name 6", Description: "Description 6"},
+	{ItemID: 7, Name: "Name 7", Description: "Description 7"},
+	{ItemID: 8, Name: "Name 8", Description: "Description 8"},
+	{ItemID: 9, Name: "Name 9", Description: "Description 9"},
 }
 
 var SequenceFavoritesTestModel = Sequence{9}
 
 type Favorites struct {
-	ID          uint64
+	ItemID      uint64
 	Name        string
 	Description string
 }
 
 func (s *Favorites) String() string {
-	return fmt.Sprintf("ID: %d, Name: %s, Description: %s", s.ID, s.Name, s.Description)
+	return fmt.Sprintf("ItemID: %d, Name: %s, Description: %s", s.ItemID, s.Name, s.Description)
 }
 
-func IsIDExists(ID uint64) bool {
-	_, err := FindEntityWithID(ID)
+func isProductWithIDExists(ID uint64) bool {
+	_, err := FindAProductWithID(ID)
 
 	if err != nil {
 		return false
@@ -36,12 +36,12 @@ func IsIDExists(ID uint64) bool {
 	return true
 }
 
-func FindEntityWithID(ID uint64) (int, error) {
-	for index, entity := range FavoritesTestModel {
-		if entity.ID == ID {
+func FindAProductWithID(ID uint64) (int, error) {
+	for index, product := range FavoritesTestModel {
+		if product.ItemID == ID {
 			return index, nil
 		}
 	}
 
-	return 0, fmt.Errorf("entity with id = %d does not exist", ID)
+	return 0, fmt.Errorf("product with id = %d does not exist", ID)
 }

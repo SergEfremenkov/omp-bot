@@ -10,7 +10,7 @@ func (c *BuyFavoritesCommander) List(inputMsg *tgbotapi.Message) {
 	const ErrorMessageStart = "Error in function BuyFavoritesCommander.List:"
 	var initialOffset uint64 = 0
 
-	listOfEntities, err := c.favoritesService.List(initialOffset, c.maxNumOfEntitiesPerPage)
+	listOfProducts, err := c.favoritesService.List(initialOffset, c.maxNumOfProductsPerPage)
 	if err != nil {
 		log.Printf("%s %v", ErrorMessageStart, err)
 		c.SendAMessage(inputMsg, fmt.Sprintf("Error: %v", err))
@@ -24,9 +24,9 @@ func (c *BuyFavoritesCommander) List(inputMsg *tgbotapi.Message) {
 		return
 	}
 
-	var outputMsgText string = "Entity List:\n\n"
-	for _, entity := range listOfEntities {
-		outputMsgText += entity.String()
+	var outputMsgText string = "List of products:\n\n"
+	for _, product := range listOfProducts {
+		outputMsgText += product.String()
 		outputMsgText += "\n"
 	}
 

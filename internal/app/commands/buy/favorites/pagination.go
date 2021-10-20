@@ -10,8 +10,8 @@ import (
 func (c *BuyFavoritesCommander) generatePaginationButtons(currentOffset uint64) ([]tgbotapi.InlineKeyboardButton, error) {
 	paginationButtons := make([]tgbotapi.InlineKeyboardButton, 0, 2)
 
-	if currentOffset >= c.maxNumOfEntitiesPerPage {
-		button, err := c.createPaginationButton("Previous page", currentOffset-c.maxNumOfEntitiesPerPage)
+	if currentOffset >= c.maxNumOfProductsPerPage {
+		button, err := c.createPaginationButton("Previous page", currentOffset-c.maxNumOfProductsPerPage)
 		if err != nil {
 			return nil, err
 		}
@@ -19,7 +19,7 @@ func (c *BuyFavoritesCommander) generatePaginationButtons(currentOffset uint64) 
 		paginationButtons = append(paginationButtons, *button)
 	}
 
-	nextOffset := currentOffset + c.maxNumOfEntitiesPerPage
+	nextOffset := currentOffset + c.maxNumOfProductsPerPage
 
 	_, err := c.favoritesService.List(nextOffset, 1)
 	if err == nil {

@@ -8,35 +8,35 @@ import (
 	"log"
 )
 
-type EntityData struct {
-	ID          uint64 `json:"id"`
+type ProductData struct {
+	ItemID      uint64 `json:"itemID"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
 }
 
 func (c *BuyFavoritesCommander) New(inputMsg *tgbotapi.Message) {
 	const ErrorMessageStart = "Error in function BuyFavoritesCommander.New:"
-	newEntity := EntityData{}
+	newProduct := ProductData{}
 
 	arguments := inputMsg.CommandArguments()
 
-	err := json.Unmarshal([]byte(arguments), &newEntity)
+	err := json.Unmarshal([]byte(arguments), &newProduct)
 	if err != nil {
-		log.Printf("%s error reading json data for type EntityData from input string %v - %v",
+		log.Printf("%s error reading json data for type ProductData from input string %v - %v",
 			ErrorMessageStart,
 			arguments,
 			err,
 		)
 
 		c.SendAMessage(inputMsg, "Input data error. Use the following syntax:\n\n"+
-			"/new__buy__favorites { \"name\" : \"entity name\", \"description\": \"entity description\" }\n\n"+
+			"/new__buy__favorites { \"name\" : \"product name\", \"description\": \"product description\" }\n\n"+
 			", where field \"name\" is required.",
 		)
 
 		return
 	}
 
-	ID, err := c.favoritesService.Create(buy.Favorites(newEntity))
+	itemID, err := c.favoritesService.Create(buy.Favorites(newProduct))
 	if err != nil {
 		log.Printf("%s %v",
 			ErrorMessageStart,
@@ -48,5 +48,5 @@ func (c *BuyFavoritesCommander) New(inputMsg *tgbotapi.Message) {
 		return
 	}
 
-	c.SendAMessage(inputMsg, fmt.Sprintf("Entity successfully created with ID = %d.", ID))
+	c.SendAMessage(inputMsg, fmt.Sprintf("Product successfully created with itemID = %d.", itemID))
 }

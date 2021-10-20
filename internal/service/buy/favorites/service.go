@@ -21,7 +21,7 @@ func NewDummyFavoritesService() *DummyFavoritesService {
 }
 
 func (s *DummyFavoritesService) Describe(favoritesID uint64) (*buy.Favorites, error) {
-	index, err := buy.FindEntityWithID(favoritesID)
+	index, err := buy.FindAProductWithID(favoritesID)
 	if err != nil {
 		return nil, err
 	}
@@ -34,7 +34,7 @@ func (s *DummyFavoritesService) List(cursor uint64, limit uint64) ([]buy.Favorit
 	lastIndex := cursor + limit
 
 	if cursor >= sliceLength {
-		return nil, fmt.Errorf("requested boundaries are set incorrectly. Number of entities = %d", sliceLength)
+		return nil, fmt.Errorf("requested boundaries are set incorrectly. Number of products = %d", sliceLength)
 	}
 
 	if lastIndex >= sliceLength {
@@ -49,15 +49,15 @@ func (s *DummyFavoritesService) Create(favorites buy.Favorites) (uint64, error) 
 		return 0, errors.New("the field \"name\" is required")
 	}
 
-	favorites.ID = buy.SequenceFavoritesTestModel.NextVal()
+	favorites.ItemID = buy.SequenceFavoritesTestModel.NextVal()
 
 	buy.FavoritesTestModel = append(buy.FavoritesTestModel, favorites)
 
-	return favorites.ID, nil
+	return favorites.ItemID, nil
 }
 
 func (s *DummyFavoritesService) Update(favoritesID uint64, favorites buy.Favorites) error {
-	index, err := buy.FindEntityWithID(favoritesID)
+	index, err := buy.FindAProductWithID(favoritesID)
 	if err != nil {
 		return err
 	}
@@ -68,7 +68,7 @@ func (s *DummyFavoritesService) Update(favoritesID uint64, favorites buy.Favorit
 }
 
 func (s *DummyFavoritesService) Remove(favoritesID uint64) (bool, error) {
-	index, err := buy.FindEntityWithID(favoritesID)
+	index, err := buy.FindAProductWithID(favoritesID)
 	if err != nil {
 		return false, err
 	}

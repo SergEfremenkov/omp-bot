@@ -12,9 +12,9 @@ func (c *BuyFavoritesCommander) Get(inputMsg *tgbotapi.Message) {
 
 	arguments := inputMsg.CommandArguments()
 
-	ID, err := strconv.Atoi(arguments)
-	if err != nil || ID < 0 {
-		msg := fmt.Sprintf("wrong argument. Identifier must be unsigned integer.")
+	itemID, err := strconv.Atoi(arguments)
+	if err != nil || itemID < 0 {
+		msg := fmt.Sprintf("wrong argument. Product ID must be an unsigned integer.")
 
 		log.Printf("%s %s\nCommandArguments = %s", ErrorMessageStart, msg, arguments)
 		c.SendAMessage(inputMsg, fmt.Sprintf("Error: %s", msg))
@@ -22,7 +22,7 @@ func (c *BuyFavoritesCommander) Get(inputMsg *tgbotapi.Message) {
 		return
 	}
 
-	entity, err := c.favoritesService.Describe(uint64(ID))
+	product, err := c.favoritesService.Describe(uint64(itemID))
 	if err != nil {
 		log.Printf("%s %v", ErrorMessageStart, err)
 		c.SendAMessage(inputMsg, fmt.Sprintf("Error: %v", err))
@@ -30,5 +30,5 @@ func (c *BuyFavoritesCommander) Get(inputMsg *tgbotapi.Message) {
 		return
 	}
 
-	c.SendAMessage(inputMsg, entity.String())
+	c.SendAMessage(inputMsg, product.String())
 }

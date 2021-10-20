@@ -27,7 +27,7 @@ func (c *BuyFavoritesCommander) CallbackList(callback *tgbotapi.CallbackQuery, c
 		return
 	}
 
-	listOfEntities, err := c.favoritesService.List(parsedData.Offset, c.maxNumOfEntitiesPerPage)
+	listOfProducts, err := c.favoritesService.List(parsedData.Offset, c.maxNumOfProductsPerPage)
 	if err != nil {
 		log.Printf("%s %v", ErrorMessageStart, err)
 		c.SendAMessage(callback.Message, fmt.Sprintf("Error: %v", err))
@@ -41,9 +41,9 @@ func (c *BuyFavoritesCommander) CallbackList(callback *tgbotapi.CallbackQuery, c
 		return
 	}
 
-	outputMsgText := "Entity List:\n\n"
-	for _, entity := range listOfEntities {
-		outputMsgText += entity.String()
+	outputMsgText := "List of products:\n\n"
+	for _, product := range listOfProducts {
+		outputMsgText += product.String()
 		outputMsgText += "\n"
 	}
 

@@ -23,7 +23,7 @@ type FavoritesCommander interface {
 type BuyFavoritesCommander struct {
 	bot                     *tgbotapi.BotAPI
 	favoritesService        favorites.FavoritesService
-	maxNumOfEntitiesPerPage uint64
+	maxNumOfProductsPerPage uint64
 }
 
 func NewFavoritesCommander(bot *tgbotapi.BotAPI) FavoritesCommander {
@@ -32,7 +32,7 @@ func NewFavoritesCommander(bot *tgbotapi.BotAPI) FavoritesCommander {
 	return &BuyFavoritesCommander{
 		bot:                     bot,
 		favoritesService:        favoritesService,
-		maxNumOfEntitiesPerPage: 4,
+		maxNumOfProductsPerPage: 4,
 	}
 }
 
